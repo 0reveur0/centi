@@ -21,7 +21,8 @@
     "react-virtualized-auto-sizer": "^2.0.3",
     "react-window": "^2.2.7",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vite-plugin-svgr": "^5.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
