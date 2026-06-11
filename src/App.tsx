@@ -7,7 +7,7 @@ import { useLanguage } from './contexts/LanguageContext';
 import WordCard from './components/WordCard';
 
 const App = () => {
-  const { entries, search, fuse } = useDictionary();
+  const { entries, fuse } = useDictionary();
   const [searchResults, setSearchResults] = useState<DictionaryEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<DictionaryEntry | null>(null);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -29,7 +29,7 @@ const App = () => {
   const handleSearch = (query: string) => {
     if (!fuse) return;
     if (query) {
-      const results = fuse.search(query).map(r => r.item);
+      const results = fuse.search(query).map(result => result.item);
       setSearchResults(results);
       updateRecentSearches(query);
     } else {
@@ -61,7 +61,7 @@ const App = () => {
         <h2 className="text-xl font-bold mb-4">{language === 'en' ? 'Random Words' : '随机词语'}</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
           {entries.slice(0, 4).map(entry => (
-              <WordCard key={entry.simplified} entry={entry} onSelect={setSelectedEntry} />
+              <WordCard key={entry.hanzi} entry={entry} onSelect={setSelectedEntry} />
           ))}
         </div>
       </div>
@@ -95,7 +95,7 @@ const App = () => {
         ) : (
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {searchResults.map(entry => (
-              <WordCard key={entry.simplified} entry={entry} onSelect={setSelectedEntry} />
+              <WordCard key={entry.hanzi} entry={entry} onSelect={setSelectedEntry} />
             ))}
           </div>
         )}
@@ -110,4 +110,3 @@ const App = () => {
 };
 
 export default App;
-

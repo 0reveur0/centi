@@ -1,42 +1,28 @@
 import { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
+import dictionaryData from '../data/words.json';
 
-// Temporary data structure for the dictionary entries
 export interface DictionaryEntry {
-  simplified: string;
+  hanzi: string;
   traditional: string;
   pinyin: string;
-  meanings: string[];
+  meaning: string;
+  categories: string[];
 }
 
 const useDictionary = () => {
-  const [entries, setEntries] = useState<DictionaryEntry[]>([]);
+  const [entries] = useState<DictionaryEntry[]>(dictionaryData);
   const [fuse, setFuse] = useState<Fuse<DictionaryEntry> | null>(null);
 
   useEffect(() => {
-    fetch('/cedict.json')
-      .then(res => res.json())
-      .then(data => {
-        setEntries(data);
-        setFuse(new Fuse(data, {
-          keys: ['simplified', 'traditional', 'pinyin', 'meanings'],
-          threshold: 0.3,
-        }));
-      });
-  }, []);
+    setFuse(new Fuse(entries, {
+      keys: ['hanzi', 'traditional', 'pinyin', 'meaning'],
+      includeScore: true,
+      threshold: 0.3,
+    }));
+  }, [entries]);
 
-  const search = (query: string) => {
-    if (fuse && query) {
-      const results = fuse.search(query);
-      setEntries(results.map(r => r.item));
-    } else {
-      // Reset to all entries if the query is empty
-      // This might be too slow; we should probably fetch the data again
-      fetch('/cedict.json').then(res => res.json()).then(data => setEntries(data));
-    }
-  };
-
-  return { entries, search };
+  return { entries, fuse };
 };
 
 export default useDictionary;

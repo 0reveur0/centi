@@ -12,14 +12,14 @@ const WordCard = ({ entry, onSelect }: WordCardProps) => {
       onClick={() => onSelect(entry)}
     >
       <div className="flex items-center justify-between">
-        <h3 className="font-hanzi text-2xl font-bold">{entry.simplified}</h3>
+        <h3 className="font-hanzi text-2xl font-bold">{entry.hanzi}</h3>
         {entry.traditional && (
           <p className="text-muted-foreground">{entry.traditional}</p>
         )}
       </div>
       <p className="text-primary mt-1">{entry.pinyin}</p>
       <p className="text-muted-foreground mt-2 truncate">
-        {entry.meanings.join('; ')}
+        {entry.meaning}
       </p>
     </div>
   );
