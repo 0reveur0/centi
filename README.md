@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="/public/logo.svg" width="150" alt="WenZi Logo">
+</p>
+
 # WenZi - Từ điển Hán Việt
 
 WenZi là một ứng dụng từ điển Hán Việt đơn giản, giúp bạn tra cứu từ vựng tiếng Trung một cách nhanh chóng và dễ dàng.
