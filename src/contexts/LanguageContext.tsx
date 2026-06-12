@@ -1,39 +1,46 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-type Language = 'en' | 'vi';
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
+// Định nghĩa kiểu cho context
 interface LanguageContextType {
-    language: Language;
-    toggleLanguage: () => void;
+  language: string;
+  toggleLanguage: () => void;
 }
 
-export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+// Tạo Context với giá trị mặc định là undefined
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-    const [language, setLanguage] = useState<Language>(() => {
-        const storedLanguage = localStorage.getItem('language');
-        return (storedLanguage === 'en' || storedLanguage === 'vi') ? storedLanguage : 'vi';
-    });
+// Tạo Provider component
+interface LanguageProviderProps {
+  children: ReactNode;
+}
 
-    useEffect(() => {
-        localStorage.setItem('language', language);
-    }, [language]);
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
+  const [language, setLanguage] = useState(() => {
+    // Lấy ngôn ngữ từ localStorage khi component được tạo
+    return localStorage.getItem('language') || 'en';
+  });
 
-    const toggleLanguage = () => {
-        setLanguage(prevLanguage => (prevLanguage === 'vi' ? 'en' : 'vi'));
-    };
+  useEffect(() => {
+    // Lưu ngôn ngữ vào localStorage mỗi khi nó thay đổi
+    localStorage.setItem('language', language);
+  }, [language]);
 
-    return (
-        <LanguageContext.Provider value={{ language, toggleLanguage }}>
-            {children}
-        </Language.Provider>
-    );
+  const toggleLanguage = () => {
+    setLanguage((prevLanguage) => (prevLanguage === 'en' ? 'vi' : 'en'));
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, toggleLanguage }}>
+      {children}
+    </LanguageContext.Provider>
+  );
 };
 
-// Custom hook to use the LanguageContext
+// Tạo custom hook để sử dụng LanguageContext
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
