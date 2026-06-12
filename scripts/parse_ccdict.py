@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Parse CC-CEDICT dictionary file into optimised JSON chunks for Centi frontend.
+Parse CC-CEDICT dictionary file into optimised JSON chunks for WenZi frontend.
 
 Usage:
   python scripts/parse_ccdict.py cedict_ts.txt
